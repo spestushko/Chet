@@ -6,6 +6,15 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+
+/**
+* Establish database connection
+*/
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/chet')
+        .then (()    => console.log(`Connection to mongodb established`))
+        .catch((err) => console.error(`Error occured: ${err}`));
 
 /**
 * Include routes
@@ -29,6 +38,16 @@ app.use(express.static(path.join(__dirname, 'dist')));
 * Expose routes
 */
 app.use('/chat', chat);
+
+/**
+ * Catch all the routes and give back the Angular app
+ */
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('./dist/'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './dist/index.html'));
+  });
+}
 
 /**
 * Catch 404 -> Forward to err handler
