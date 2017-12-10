@@ -23,7 +23,7 @@ var isStatic = function (node) { return ts.getCombinedModifierFlags(node) & ts.M
 /**
  * Collect decorator metadata from a TypeScript module.
  */
-var MetadataCollector = (function () {
+var MetadataCollector = /** @class */ (function () {
     function MetadataCollector(options) {
         if (options === void 0) { options = {}; }
         this.options = options;
@@ -55,8 +55,7 @@ var MetadataCollector = (function () {
             return evaluator.evaluateNode(decoratorNode.expression);
         }
         function recordEntry(entry, node) {
-            nodeMap.set(entry, node);
-            return entry;
+            return evaluator_1.recordMapEntry(entry, node, nodeMap, sourceFile);
         }
         function errorSym(message, node, context) {
             return evaluator_1.errorSymbol(message, node, context, sourceFile);
@@ -511,6 +510,8 @@ var MetadataCollector = (function () {
                 __symbolic: 'module',
                 version: this.options.version || schema_1.METADATA_VERSION, metadata: metadata
             };
+            if (sourceFile.moduleName)
+                result.importAs = sourceFile.moduleName;
             if (exports)
                 result.exports = exports;
             return result;
