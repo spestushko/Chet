@@ -26,6 +26,7 @@
     "core-js": "^2.4.1",
     "deepstream.io-client-js": "^2.3.0",
     "express": "^4.16.2",
+    "mongoose": "^4.13.7",
     "morgan": "^1.9.0",
     "rxjs": "^5.5.2",
     "serve-favicon": "^2.4.5",
