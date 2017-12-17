@@ -9,9 +9,19 @@ import { AppComponent } from './app.component';
 import { ChatService } from './chat.service';
 import { ChatComponent } from './chat/chat.component';
 
+import { AuthGuard } from './auth/auth.guard';
+
 const ROUTES = [
-  { path: '', redirectTo: 'chats', pathMatch: 'full' },
-  { path: 'chats', component: ChatComponent }
+  { path: '',
+    redirectTo: 'chats',
+    pathMatch: 'full'
+  },
+  { path: 'chats',
+    component: ChatComponent,
+    canActivate: [
+      AuthGuard
+    ]
+  }
 ];
 
 @NgModule({
@@ -26,6 +36,7 @@ const ROUTES = [
     RouterModule.forRoot(ROUTES)
   ],
   providers: [
+    AuthGuard,
     ChatService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
